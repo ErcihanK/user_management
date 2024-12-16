@@ -256,7 +256,8 @@ async def update_profile(
     profile_update: UserUpdate,
     request: Request,
     db: AsyncSession = Depends(get_db),
-    current_user: dict = Depends(get_current_user)
+    current_user: dict = Depends(get_current_user),
+    email_service: EmailService = Depends(get_email_service)  # Add email service
 ):
     """
     Update user's own profile information.
@@ -276,6 +277,15 @@ async def update_profile(
     updated_user = await UserService.update_profile(db, user_id, user_data)
     if not updated_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    
+    # Send email notification about profile updates
+    update_fields = [field for field in user_data.keys()]
+    if update_fields:
+        await email_service.send_user_email(
+            updated_user.email,
+            "Profile Update Notification",
+            f"Your profile has been updated. Changed fields: {', '.join(update_fields)}"
+        )
     
     return UserResponse.model_construct(
         id=updated_user.id,
