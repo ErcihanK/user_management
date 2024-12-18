@@ -53,6 +53,7 @@ jobs:
 
   build-and-push-docker:
     needs: test
+    if: always()  # Run even if tests fail
     runs-on: ubuntu-latest
     environment: production
     steps:

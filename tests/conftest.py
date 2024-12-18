@@ -129,7 +129,7 @@ async def user(db_session):
 @pytest.fixture(scope="function")
 async def verified_user(db_session):
     user_data = {
-        "nickname": fake.user_name(),
+        "nickname": f"test_user_{uuid4().hex[:8]}",  # Make nickname unique
         "first_name": fake.first_name(),
         "last_name": fake.last_name(),
         "email": fake.email(),
