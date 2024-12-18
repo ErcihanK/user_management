@@ -24,12 +24,30 @@ The project is containerized and available on DockerHub:
 
 1. Test Profile Validation (Lines 6-23):
 [Test Profile Validation](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L6-L23)
+
 Test Profile URLs (Lines 44-64):
+[Test Profile Validation](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L44-L64)
+
 Test Professional Status Notification (Lines 66-81):
+[Test Profile Validation](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L6-L23)
+
 Test Email Notification Content (Lines 83-99):
+[Test Profile Validation](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L6-L23)
+
 Test Manager Update Permissions (Lines 101-116):
+[Test Profile Validation](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L6-L23)
+
 Test Invalid URL Formats (Lines 118-134):
+[Test Profile Validation](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L6-L23)
+
 Test Professional Status Toggle (Lines 193-215):
+[Test Profile Validation](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L6-L23)
+
 Test Special Characters Handling (Lines 267-285):
+[Test Profile Validation](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L6-L23)
+
 Test Consecutive Updates (Lines 287-313):
+[Test Profile Validation](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L6-L23)
+
 Test User Statistics (Lines 315-337):
+[Test Profile Validation](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L6-L23)
