@@ -26,28 +26,28 @@ The project is containerized and available on DockerHub:
 [Test](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L6-L23)
 
 Test Profile URLs (Lines 44-64):
-[Test](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L44-L64)
+[Test](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L39-L56)
 
 Test Professional Status Notification (Lines 66-81):
-[Test](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L66-L81)
+[Test](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L57-L70)
 
 Test Email Notification Content (Lines 83-99):
 [Test](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L83-L99)
 
 Test Manager Update Permissions (Lines 101-116):
-[Test](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L101-L116)
+[Test](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L89-L101)
 
 Test Invalid URL Formats (Lines 118-134):
-[Test](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L118-L134)
+[Test](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L104-L117)
 
 Test Professional Status Toggle (Lines 193-215):
-[Test](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L193-L215)
+[Test](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L242-L263)
 
 Test Special Characters Handling (Lines 267-285):
-[Test](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L267-L285)
+[Test](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L316-L333)
 
 Test Consecutive Updates (Lines 287-313):
-[Test](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#287-L313)
+[Test](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#335-L358)
 
 Test User Statistics (Lines 315-337):
-[Test ](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L315-L337)
+[Test ](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L376-L397)
