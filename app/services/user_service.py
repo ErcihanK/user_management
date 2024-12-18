@@ -220,7 +220,7 @@ class UserService:
 
     @classmethod
     async def update_profile(cls, session: AsyncSession, user_id: UUID, profile_data: dict) -> Optional[User]:
-        """Update user profile information"""
+        """Update user profile information with statistics"""
         try:
             # Validate URLs first
             cls.validate_profile_urls(profile_data)
@@ -229,6 +229,10 @@ class UserService:
             user = await cls.get_by_id(session, user_id)
             if not user:
                 return None
+            
+            # Update statistics
+            user.profile_updates_count = (user.profile_updates_count or 0) + 1
+            user.last_profile_update = func.now()
             
             # Only update allowed fields
             allowed_fields = {'first_name', 'last_name', 'bio', 'profile_picture_url', 
@@ -261,3 +265,17 @@ class UserService:
         except Exception as e:
             await session.rollback()
             raise e
+
+    @classmethod
+    async def get_user_statistics(cls, session: AsyncSession, user_id: UUID) -> dict:
+        """Get user profile statistics"""
+        user = await cls.get_by_id(session, user_id)
+        if not user:
+            return None
+            
+        return {
+            "profile_updates_count": user.profile_updates_count or 0,
+            "last_profile_update": user.last_profile_update,
+            "professional_status": user.is_professional,
+            "professional_status_updated_at": user.professional_status_updated_at
+        }

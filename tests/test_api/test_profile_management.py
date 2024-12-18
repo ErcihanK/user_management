@@ -371,3 +371,27 @@ async def test_profile_update_content_validation(async_client, verified_user, us
         headers=headers
     )
     assert response.status_code == 422
+
+@pytest.mark.asyncio
+async def test_user_statistics(async_client, verified_user, admin_token):
+    """Test user statistics endpoint"""
+    # First update profile to create some stats
+    update_data = {"bio": "New bio"}
+    headers = {"Authorization": f"Bearer {admin_token}"}
+    
+    # Make a profile update
+    await async_client.put(
+        f"/users/{verified_user.id}/profile",
+        json=update_data,
+        headers=headers
+    )
+    
+    # Get statistics
+    response = await async_client.get(
+        f"/users/{verified_user.id}/statistics",
+        headers=headers
+    )
+    
+    assert response.status_code == 200
+    assert response.json()["profile_updates_count"] > 0
+    assert "last_profile_update" in response.json()

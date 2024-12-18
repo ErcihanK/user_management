@@ -349,3 +349,18 @@ async def update_professional_status(
         is_professional=user.is_professional,
         links=create_user_links(user.id, request)
     )
+
+@router.get("/users/{user_id}/statistics",
+    tags=["User Profile Management"],
+    summary="Get User Statistics",
+    description="Get user profile activity statistics")
+async def get_user_statistics(
+    user_id: UUID,
+    db: AsyncSession = Depends(get_db),
+    current_user: dict = Depends(require_role(["ADMIN", "MANAGER"]))
+):
+    """Get user profile statistics. Only available to admins and managers."""
+    stats = await UserService.get_user_statistics(db, user_id)
+    if not stats:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    return stats
