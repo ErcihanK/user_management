@@ -248,25 +248,16 @@ async def verify_email(user_id: UUID, token: str, db: AsyncSession = Depends(get
 
 @router.put("/users/{user_id}/profile", 
     response_model=UserResponse, 
-    tags=["User Profile Management"],
-    summary="Update User Profile",
-    description="Update a user's profile information including bio, name, and social media links")
+    tags=["User Profile Management"])
 async def update_profile(
     user_id: UUID,
     profile_update: UserUpdate,
     request: Request,
     db: AsyncSession = Depends(get_db),
     current_user: dict = Depends(get_current_user),
-    email_service: EmailService = Depends(get_email_service)  # Add email service
+    email_service: EmailService = Depends(get_email_service)
 ):
-    """
-    Update user's own profile information.
-    
-    Parameters:
-    - user_id: UUID of the user to update
-    - profile_update: Profile fields to update (first_name, last_name, bio, etc.)
-    """
-    # Check if user is updating their own profile or has admin/manager rights
+    """Update user's own profile information."""
     if current_user.get("role") not in ["ADMIN", "MANAGER"] and str(user_id) != str(current_user.get("id")):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -278,14 +269,23 @@ async def update_profile(
     if not updated_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     
-    # Send email notification about profile updates
-    update_fields = [field for field in user_data.keys()]
-    if update_fields:
-        await email_service.send_user_email(
-            updated_user.email,
-            "Profile Update Notification",
-            f"Your profile has been updated. Changed fields: {', '.join(update_fields)}"
-        )
+    # Enhanced email notification with field changes
+    try:
+        update_fields = [field for field in user_data.keys()]
+        if update_fields:
+            email_body = (
+                f"Your profile has been updated with the following changes:\n\n"
+                f"{', '.join(f'- {field}' for field in update_fields)}\n\n"
+                f"If you did not make these changes, please contact support immediately."
+            )
+            await email_service.send_user_email(
+                updated_user.email,
+                "Profile Update Notification",
+                email_body
+            )
+    except Exception as e:
+        logger.error(f"Failed to send profile update notification: {e}")
+        # Continue with the response even if email fails
     
     return UserResponse.model_construct(
         id=updated_user.id,

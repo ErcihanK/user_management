@@ -153,3 +153,25 @@ async def test_profile_fields_length_limits(async_client, verified_user, user_to
         headers=headers
     )
     assert response.status_code == 422
+
+@pytest.mark.asyncio
+async def test_profile_update_notification_content(async_client, verified_user, user_token, email_service):
+    """Test that email notifications contain correct field information"""
+    update_data = {
+        "first_name": "Updated",
+        "last_name": "Name",
+        "bio": "New bio"
+    }
+    headers = {"Authorization": f"Bearer {user_token}"}
+    response = await async_client.put(
+        f"/users/{verified_user.id}/profile",
+        json=update_data,
+        headers=headers
+    )
+    assert response.status_code == 200
+    # Verify email content
+    assert email_service.send_user_email.called
+    call_args = email_service.send_user_email.call_args
+    assert "first_name" in call_args[0][2]
+    assert "last_name" in call_args[0][2]
+    assert "bio" in call_args[0][2]
