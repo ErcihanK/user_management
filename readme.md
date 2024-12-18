@@ -15,6 +15,7 @@
 
 5. [Profile Statistics Implementation #5](https://github.com/ErcihanK/user_management/issues/5)
    Added comprehensive profile statistics tracking including update counts, last modification timestamps, and professional status history. Implemented admin/manager-only access to statistics endpoints.
+![image](https://github.com/user-attachments/assets/3b23ae95-3622-4907-8306-8e61d7737f19)
 
 ## Docker Image
 The project is containerized and available on DockerHub:
