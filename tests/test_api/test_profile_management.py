@@ -371,3 +371,23 @@ async def test_profile_update_content_validation(async_client, verified_user, us
         headers=headers
     )
     assert response.status_code == 422
+
+@pytest.mark.asyncio
+async def test_profile_input_sanitization(async_client, verified_user, user_token):
+    """Test that input fields are properly sanitized"""
+    unsafe_data = {
+        "first_name": "<script>alert('xss')</script>John",
+        "last_name": "Smith'; DROP TABLE users;--",
+        "bio": "<style>body{background:red}</style>Bio"
+    }
+    headers = {"Authorization": f"Bearer {user_token}"}
+    response = await async_client.put(
+        f"/users/{verified_user.id}/profile",
+        json=unsafe_data,
+        headers=headers
+    )
+    assert response.status_code == 200
+    # Check that HTML and SQL injection attempts were removed
+    assert "<script>" not in response.json()["first_name"]
+    assert "DROP TABLE" not in response.json()["last_name"]
+    assert "<style>" not in response.json()["bio"]
