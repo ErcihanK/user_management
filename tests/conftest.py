@@ -48,7 +48,7 @@ AsyncSessionScoped = scoped_session(AsyncTestingSessionLocal)
 
 @pytest.fixture
 def email_service():
-    # Assuming the TemplateManager does not need any arguments for initialization
+    # Assuming the TemplateManager does not need any arguments for initialization 
     template_manager = TemplateManager()
     email_service = EmailService(template_manager=template_manager)
     return email_service
