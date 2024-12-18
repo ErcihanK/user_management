@@ -22,4 +22,14 @@ The project is containerized and available on DockerHub:
 - Repository: [ercihankorkmaz/user_management](https://hub.docker.com/repository/docker/ercihankorkmaz/user_management)
 - Latest Image: `ercihankorkmaz/user_management:latest`
 
+1. Test Profile Validation (Lines 6-23):
 [Test Profile Validation](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L6-L23)
+Test Profile URLs (Lines 44-64):
+Test Professional Status Notification (Lines 66-81):
+Test Email Notification Content (Lines 83-99):
+Test Manager Update Permissions (Lines 101-116):
+Test Invalid URL Formats (Lines 118-134):
+Test Professional Status Toggle (Lines 193-215):
+Test Special Characters Handling (Lines 267-285):
+Test Consecutive Updates (Lines 287-313):
+Test User Statistics (Lines 315-337):
