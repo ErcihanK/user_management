@@ -15,8 +15,6 @@ from uuid import UUID
 from app.services.email_service import EmailService
 from app.models.user_model import UserRole
 import logging
-import re
-import html
 
 settings = get_settings()
 logger = logging.getLogger(__name__)
@@ -56,7 +54,7 @@ class UserService:
         try:
             validated_data = UserCreate(**user_data).model_dump()
             existing_user = await cls.get_by_email(session, validated_data['email'])
-            if (existing_user):
+            if existing_user:
                 logger.error("User with given email already exists.")
                 return None
             validated_data['hashed_password'] = hash_password(validated_data.pop('password'))
@@ -220,54 +218,22 @@ class UserService:
         
         return True
 
-    @staticmethod
-    def sanitize_input(text: str) -> str:
-        """Sanitize input text by removing HTML tags and dangerous characters"""
-        # Remove HTML tags
-        text = re.sub(r'<[^>]*?>', '', text)
-        # Escape special characters
-        text = html.escape(text)
-        # Remove potential SQL injection patterns
-        text = re.sub(r'(\b(select|insert|update|delete|drop|union|exec)\b)', '', text, flags=re.IGNORECASE)
-        return text.strip()
-
-    @staticmethod
-    def validate_field_length(field_name: str, value: str) -> None:
-        """Validate field lengths with specific limits"""
-        max_lengths = {
-            'first_name': 50,
-            'last_name': 50,
-            'bio': 500,
-            'nickname': 30
-        }
-        if field_name in max_lengths and len(value) > max_lengths[field_name]:
-            raise ValueError(f"{field_name} must be less than {max_lengths[field_name]} characters")
-
     @classmethod
     async def update_profile(cls, session: AsyncSession, user_id: UUID, profile_data: dict) -> Optional[User]:
-        """Update user profile information with sanitization"""
+        """Update user profile information"""
         try:
             # Validate URLs first
             cls.validate_profile_urls(profile_data)
             
-            # Sanitize and validate text fields
-            sanitized_data = {}
-            for field, value in profile_data.items():
-                if field in {'first_name', 'last_name', 'bio', 'nickname'}:
-                    sanitized_value = cls.sanitize_input(value)
-                    cls.validate_field_length(field, sanitized_value)
-                    sanitized_data[field] = sanitized_value
-                else:
-                    sanitized_data[field] = value
-
-            # Continue with existing update logic with sanitized data
+            # Continue with existing update logic
             user = await cls.get_by_id(session, user_id)
             if not user:
                 return None
-
+            
+            # Only update allowed fields
             allowed_fields = {'first_name', 'last_name', 'bio', 'profile_picture_url', 
                             'github_profile_url', 'linkedin_profile_url'}
-            filtered_data = {k: v for k, v in sanitized_data.items() if k in allowed_fields}
+            filtered_data = {k: v for k, v in profile_data.items() if k in allowed_fields}
             
             for key, value in filtered_data.items():
                 setattr(user, key, value)
@@ -275,8 +241,6 @@ class UserService:
             session.add(user)
             await session.commit()
             return user
-        except ValueError as e:
-            raise HTTPException(status_code=422, detail=str(e))
         except Exception as e:
             await session.rollback()
             raise e
