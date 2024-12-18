@@ -54,9 +54,5 @@ The project is containerized and available on DockerHub:
 [Test ](https://github.com/ErcihanK/user_management/blob/main/tests/test_api/test_profile_management.py#L376-L397)
 
 ## Core Feature Implementation
-[Profile Management Feature](https://github.com/ErcihanK/user_management/blob/main/app/routers/user_routes.py#L516-L574)
-- Located in user_routes.py, lines 516-574
-- Implements comprehensive profile management functionality
-- Includes professional status updates
-- Features email notifications and field validation
-
+[Profile Management Feature](https://github.com/ErcihanK/user_management/blob/main/app/routers/user_routes.py#L300-L390)
+There are multiple changes but this is main one
