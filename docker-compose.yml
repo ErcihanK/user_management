@@ -31,7 +31,7 @@ services:
       - app-network
 
   fastapi:
-    build: .
+    image: ercihankorkmaz/user_management:latest
     volumes:
       - .:/app
     depends_on:
