@@ -200,10 +200,32 @@ class UserService:
             return True
         return False
 
+    @staticmethod
+    def validate_profile_urls(profile_data: dict) -> bool:
+        """Validate profile URLs format and patterns"""
+        if 'github_profile_url' in profile_data:
+            if not profile_data['github_profile_url'].startswith('https://github.com/'):
+                raise ValueError("GitHub URL must start with https://github.com/")
+                
+        if 'linkedin_profile_url' in profile_data:
+            if not profile_data['linkedin_profile_url'].startswith('https://linkedin.com/in/'):
+                raise ValueError("LinkedIn URL must start with https://linkedin.com/in/")
+                
+        if 'profile_picture_url' in profile_data:
+            valid_extensions = ['.jpg', '.jpeg', '.png', '.gif']
+            if not any(profile_data['profile_picture_url'].lower().endswith(ext) for ext in valid_extensions):
+                raise ValueError("Profile picture URL must end with .jpg, .jpeg, .png, or .gif")
+        
+        return True
+
     @classmethod
     async def update_profile(cls, session: AsyncSession, user_id: UUID, profile_data: dict) -> Optional[User]:
         """Update user profile information"""
         try:
+            # Validate URLs first
+            cls.validate_profile_urls(profile_data)
+            
+            # Continue with existing update logic
             user = await cls.get_by_id(session, user_id)
             if not user:
                 return None

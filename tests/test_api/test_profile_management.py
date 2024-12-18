@@ -175,3 +175,18 @@ async def test_profile_update_notification_content(async_client, verified_user, 
     assert "first_name" in call_args[0][2]
     assert "last_name" in call_args[0][2]
     assert "bio" in call_args[0][2]
+
+@pytest.mark.asyncio
+async def test_invalid_github_url_format(async_client, verified_user, user_token):
+    """Test that GitHub URL must have correct format"""
+    update_data = {
+        "github_profile_url": "https://wrongsite.com/user"
+    }
+    headers = {"Authorization": f"Bearer {user_token}"}
+    response = await async_client.put(
+        f"/users/{verified_user.id}/profile",
+        json=update_data,
+        headers=headers
+    )
+    assert response.status_code == 422
+    assert "GitHub URL" in response.json()["detail"]
